@@ -1,1 +1,3 @@
-# myCalendar
+# myCalendar 
+
+Project in progress, built with react, redux, express and mongoDB.
