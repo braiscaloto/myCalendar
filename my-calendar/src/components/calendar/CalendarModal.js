@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
 import Modal from 'react-modal';
 import moment from 'moment';
 import DateTimePicker from 'react-datetime-picker';
 import Swal from 'sweetalert2';
+
 import { uiCloseModal } from '../../actions/ui';
-import { eventAddNew, eventClearActiveEvent } from '../../actions/events';
+import {
+	eventAddNew,
+	eventClearActiveEvent,
+	eventUpdated,
+} from '../../actions/events';
 
 const customStyles = {
 	content: {
@@ -33,6 +39,7 @@ export const CalendarModal = () => {
 	const { modalOpen } = useSelector((state) => state.ui);
 	const { activeEvent } = useSelector((state) => state.calendar);
 	const dispatch = useDispatch();
+
 	const [startDate, setStartDate] = useState(now.toDate());
 	const [endDate, setEndDate] = useState(oneHourLater.toDate());
 	const [titleValid, setTitleValid] = useState(true);
@@ -58,6 +65,8 @@ export const CalendarModal = () => {
 		dispatch(uiCloseModal());
 		dispatch(eventClearActiveEvent());
 		setFormValues(initEvent);
+		setStartDate(now.toDate());
+		setEndDate(oneHourLater.toDate());
 	};
 
 	const handleStartDateChange = (e) => {
@@ -79,8 +88,7 @@ export const CalendarModal = () => {
 
 		const momentStart = moment(start);
 		const momentEnd = moment(end);
-		console.log(momentStart);
-		console.log(momentEnd);
+
 		if (momentStart.isSameOrAfter(momentEnd)) {
 			return Swal.fire('Error', 'End date must be higer than start date');
 		}
@@ -88,16 +96,21 @@ export const CalendarModal = () => {
 			return setTitleValid(false);
 		}
 
-		dispatch(
-			eventAddNew({
-				...formValues,
-				id: new Date().getTime(),
-				user: {
-					_id: '123',
-					name: 'Jose',
-				},
-			})
-		);
+		if (activeEvent) {
+			dispatch(eventUpdated(formValues));
+		} else {
+			dispatch(
+				eventAddNew({
+					...formValues,
+					id: new Date().getTime(),
+					user: {
+						_id: '123',
+						name: 'Jose',
+					},
+				})
+			);
+		}
+
 		setTitleValid(true);
 		closeModal();
 	};
@@ -105,21 +118,20 @@ export const CalendarModal = () => {
 	return (
 		<Modal
 			isOpen={modalOpen}
-			// onAfterOpen={afterOpenModal}
 			onRequestClose={closeModal}
 			closeTimeoutMS={200}
 			style={customStyles}
 			className='modal'
 			overlayClassName='modal-fondo'
 		>
-			<h1> New event </h1>
+			<h1> {activeEvent ? 'Editar Evento' : 'Nuevo evento'} </h1>
 			<hr />
 			<form className='container' onSubmit={handleSubmitForm}>
 				<div className='form-group'>
 					<label>Date and start time</label>
 					<DateTimePicker
 						onChange={handleStartDateChange}
-						value={startDate}
+						value={start}
 						className='form-control'
 					/>
 				</div>

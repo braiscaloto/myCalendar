@@ -11,7 +11,11 @@ import { CalendarEvent } from './CalendarEvent';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { CalendarModal } from './CalendarModal';
 import { uiOpenModal } from '../../actions/ui';
-import { eventAddNew, eventSetActive } from '../../actions/events';
+import {
+	eventAddNew,
+	eventClearActiveEvent,
+	eventSetActive,
+} from '../../actions/events';
 import { AddNewButton } from '../ui/AddNewButton';
 
 moment.locale('es');
@@ -35,6 +39,10 @@ export const CalendarScreen = () => {
 	const onViewChange = (e) => {
 		setLastView(e);
 		localStorage.setItem('lastView', e);
+	};
+
+	const onSelectSlot = (e) => {
+		dispatch(eventClearActiveEvent());
 	};
 	const eventStyleGetter = (event, start, end, isSelected) => {
 		const style = {
@@ -61,6 +69,7 @@ export const CalendarScreen = () => {
 				eventPropGetter={eventStyleGetter}
 				onDoubleClickEvent={onDoubleClick}
 				onSelectEvent={onSelectEvent}
+				onSelectSlot={onSelectSlot}
 				onView={onViewChange}
 				view={lastView}
 				components={{
