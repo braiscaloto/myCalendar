@@ -11,11 +11,7 @@ import { CalendarEvent } from './CalendarEvent';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { CalendarModal } from './CalendarModal';
 import { uiOpenModal } from '../../actions/ui';
-import {
-	eventAddNew,
-	eventClearActiveEvent,
-	eventSetActive,
-} from '../../actions/events';
+import { eventClearActiveEvent, eventSetActive } from '../../actions/events';
 import { AddNewButton } from '../ui/AddNewButton';
 import { DeleteButton } from '../ui/DeleteButton';
 
@@ -43,6 +39,7 @@ export const CalendarScreen = () => {
 	};
 
 	const onSelectSlot = (e) => {
+		//console.log(e);
 		dispatch(eventClearActiveEvent());
 	};
 	const eventStyleGetter = (event, start, end, isSelected) => {
@@ -71,6 +68,7 @@ export const CalendarScreen = () => {
 				onDoubleClickEvent={onDoubleClick}
 				onSelectEvent={onSelectEvent}
 				onSelectSlot={onSelectSlot}
+				selectable={true}
 				onView={onViewChange}
 				view={lastView}
 				components={{
