@@ -17,6 +17,7 @@ import {
 	eventSetActive,
 } from '../../actions/events';
 import { AddNewButton } from '../ui/AddNewButton';
+import { DeleteButton } from '../ui/DeleteButton';
 
 moment.locale('es');
 const localizer = momentLocalizer(moment);
@@ -24,7 +25,7 @@ const localizer = momentLocalizer(moment);
 export const CalendarScreen = () => {
 	const dispatch = useDispatch();
 
-	const { events } = useSelector((state) => state.calendar);
+	const { events, activeEvent } = useSelector((state) => state.calendar);
 
 	const [lastView, setLastView] = useState(
 		localStorage.getItem('lastView' || 'month')
@@ -78,6 +79,7 @@ export const CalendarScreen = () => {
 			/>
 			<CalendarModal />
 			<AddNewButton />
+			{activeEvent && <DeleteButton />}
 		</div>
 	);
 };

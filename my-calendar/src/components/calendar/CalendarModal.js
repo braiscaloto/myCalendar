@@ -40,8 +40,8 @@ export const CalendarModal = () => {
 	const { activeEvent } = useSelector((state) => state.calendar);
 	const dispatch = useDispatch();
 
-	const [startDate, setStartDate] = useState(now.toDate());
-	const [endDate, setEndDate] = useState(oneHourLater.toDate());
+	//const [startDate, setStartDate] = useState(now.toDate());
+	//const [endDate, setEndDate] = useState(oneHourLater.toDate());
 	const [titleValid, setTitleValid] = useState(true);
 
 	const [formValues, setFormValues] = useState(initEvent);
@@ -67,19 +67,19 @@ export const CalendarModal = () => {
 		dispatch(uiCloseModal());
 		dispatch(eventClearActiveEvent());
 		setFormValues(initEvent);
-		setStartDate(now.toDate());
-		setEndDate(oneHourLater.toDate());
+		//setStartDate(now.toDate());
+		//setEndDate(oneHourLater.toDate());
 	};
 
 	const handleStartDateChange = (e) => {
-		setStartDate(e);
+		//setStartDate(e);
 		setFormValues({
 			...formValues,
 			start: e,
 		});
 	};
 	const handleEndDateChange = (e) => {
-		setEndDate(e);
+		//setEndDate(e);
 		setFormValues({
 			...formValues,
 			end: e,
@@ -107,7 +107,7 @@ export const CalendarModal = () => {
 					id: new Date().getTime(),
 					user: {
 						_id: '123',
-						name: 'Jose',
+						name: 'Brais',
 					},
 				})
 			);
