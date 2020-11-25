@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import 'moment/locale/es';
 
 import { Navbar } from '../ui/Navbar';
 import { calendarOptions } from '../../helpers/calendar-options';
@@ -13,24 +14,14 @@ import { uiOpenModal } from '../../actions/ui';
 import { eventAddNew, eventSetActive } from '../../actions/events';
 import { AddNewButton } from '../ui/AddNewButton';
 
+moment.locale('es');
 const localizer = momentLocalizer(moment);
-
-const events = [
-	{
-		title: 'Boss birthday',
-		start: moment().toDate(),
-		end: moment().add(2, 'hours').toDate(),
-		bgcolor: '#fafafa',
-		notes: 'Buy cake',
-		user: {
-			_id: '123',
-			name: 'Pepe',
-		},
-	},
-];
 
 export const CalendarScreen = () => {
 	const dispatch = useDispatch();
+
+	const { events } = useSelector((state) => state.calendar);
+
 	const [lastView, setLastView] = useState(
 		localStorage.getItem('lastView' || 'month')
 	);
@@ -40,7 +31,6 @@ export const CalendarScreen = () => {
 	};
 	const onSelectEvent = (e) => {
 		dispatch(eventSetActive(e));
-		dispatch(uiOpenModal());
 	};
 	const onViewChange = (e) => {
 		setLastView(e);
