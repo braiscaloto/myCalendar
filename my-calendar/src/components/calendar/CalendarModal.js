@@ -51,6 +51,8 @@ export const CalendarModal = () => {
 	useEffect(() => {
 		if (activeEvent) {
 			setFormValues(activeEvent);
+		} else {
+			setFormValues(initEvent);
 		}
 	}, [activeEvent, setFormValues]);
 
@@ -140,8 +142,8 @@ export const CalendarModal = () => {
 					<label>Date and end time</label>
 					<DateTimePicker
 						onChange={handleEndDateChange}
-						value={endDate}
-						minDate={startDate}
+						value={end}
+						minDate={start}
 						className='form-control'
 					/>
 				</div>
