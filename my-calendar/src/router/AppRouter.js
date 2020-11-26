@@ -18,7 +18,11 @@ export const AppRouter = () => {
 	}, [dispatch]);
 
 	if (checking) {
-		return <h5>Espere...</h5>;
+		return (
+			<div className='spinner-border' role='status'>
+				<span className='sr-only'>Loading...</span>
+			</div>
+		);
 	}
 
 	return (
