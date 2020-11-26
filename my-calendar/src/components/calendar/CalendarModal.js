@@ -10,7 +10,7 @@ import { uiCloseModal } from '../../actions/ui';
 import {
 	eventClearActiveEvent,
 	eventStartAddNew,
-	eventUpdated,
+	eventStartUpdate,
 } from '../../actions/events';
 
 const customStyles = {
@@ -104,7 +104,7 @@ export const CalendarModal = () => {
 		}
 
 		if (activeEvent) {
-			dispatch(eventUpdated(formValues));
+			dispatch(eventStartUpdate(formValues));
 		} else {
 			dispatch(eventStartAddNew(formValues));
 		}
@@ -152,7 +152,7 @@ export const CalendarModal = () => {
 						className={`form-control ${
 							!titleValid && 'is-invalid'
 						}`}
-						placeholder='Event title'
+						placeholder='Título del evento'
 						name='title'
 						value={title}
 						onChange={handleInputChange}
@@ -167,7 +167,7 @@ export const CalendarModal = () => {
 					<textarea
 						type='text'
 						className='form-control'
-						placeholder='Notes'
+						placeholder='Notas'
 						rows='5'
 						name='notes'
 						value={notes}
