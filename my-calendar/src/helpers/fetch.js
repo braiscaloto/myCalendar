@@ -1,7 +1,7 @@
-const baseURL = 'process.env.REACT_APP_API_URL';
+const baseUrl = process.env.REACT_APP_API_URL;
 
-const fetchNoToken = (endpoint, data, method = 'GET') => {
-	const url = `${baseURL}/${endpoint}`;
+const fetchSinToken = (endpoint, data, method = 'GET') => {
+	const url = `${baseUrl}/${endpoint}`;
 
 	if (method === 'GET') {
 		return fetch(url);
@@ -15,14 +15,15 @@ const fetchNoToken = (endpoint, data, method = 'GET') => {
 		});
 	}
 };
-const fetchWithToken = (endpoint, data, method = 'GET') => {
-	const url = `${baseURL}/${endpoint}`;
+
+const fetchConToken = (endpoint, data, method = 'GET') => {
+	const url = `${baseUrl}/${endpoint}`;
 	const token = localStorage.getItem('token') || '';
 
 	if (method === 'GET') {
 		return fetch(url, {
 			method,
-			hearders: {
+			headers: {
 				'x-token': token,
 			},
 		});
@@ -38,4 +39,4 @@ const fetchWithToken = (endpoint, data, method = 'GET') => {
 	}
 };
 
-export { fetchNoToken, fetchWithToken };
+export { fetchSinToken, fetchConToken };

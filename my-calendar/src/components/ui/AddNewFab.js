@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { eventClearActiveEvent } from '../../actions/events';
 import { uiOpenModal } from '../../actions/ui';
 
-export const AddNewButton = () => {
+export const AddNewFab = () => {
 	const dispatch = useDispatch();
 
 	const handleClickNew = () => {
@@ -12,7 +12,7 @@ export const AddNewButton = () => {
 	};
 
 	return (
-		<button onClick={handleClickNew} className='btn btn-primary fab'>
+		<button className='btn btn-primary fab' onClick={handleClickNew}>
 			<i className='fas fa-plus'></i>
 		</button>
 	);

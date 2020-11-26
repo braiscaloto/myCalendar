@@ -1,11 +1,10 @@
-import Swal from 'sweetalert2';
-import { fetchNoToken, fetchWithToken } from '../helpers/fetch';
+import { fetchSinToken, fetchConToken } from '../helpers/fetch';
 import { types } from '../types/types';
-import { eventLogout } from './events';
+import Swal from 'sweetalert2';
 
-export const startlogin = (email, password) => {
+export const startLogin = (email, password) => {
 	return async (dispatch) => {
-		const resp = await fetchNoToken('auth', { email, password }, 'POST');
+		const resp = await fetchSinToken('auth', { email, password }, 'POST');
 		const body = await resp.json();
 
 		if (body.ok) {
@@ -26,7 +25,7 @@ export const startlogin = (email, password) => {
 
 export const startRegister = (email, password, name) => {
 	return async (dispatch) => {
-		const resp = await fetchNoToken(
+		const resp = await fetchSinToken(
 			'auth/register',
 			{ email, password, name },
 			'POST'
@@ -49,18 +48,10 @@ export const startRegister = (email, password, name) => {
 	};
 };
 
-const login = (user) => {
-	return {
-		type: types.authLogin,
-		payload: user,
-	};
-};
-
 export const startChecking = () => {
 	return async (dispatch) => {
-		const resp = await fetchWithToken('auth/renew'); //por defecto es un 'GET'
+		const resp = await fetchConToken('auth/renew');
 		const body = await resp.json();
-		console.log(body);
 
 		if (body.ok) {
 			localStorage.setItem('token', body.token);
@@ -77,16 +68,17 @@ export const startChecking = () => {
 		}
 	};
 };
-const checkingFinish = () => {
-	return {
-		type: types.authCheckingFinish,
-	};
-};
+
+const checkingFinish = () => ({ type: types.authCheckingFinish });
+
+const login = (user) => ({
+	type: types.authLogin,
+	payload: user,
+});
 
 export const startLogout = () => {
 	return (dispatch) => {
 		localStorage.clear();
-		dispatch(eventLogout());
 		dispatch(logout());
 	};
 };

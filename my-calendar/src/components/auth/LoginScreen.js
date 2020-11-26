@@ -1,52 +1,61 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import Swal from 'sweetalert2';
-import { startlogin, startRegister } from '../../actions/auth';
 import { useForm } from '../../hooks/useForm';
+import { startLogin, startRegister } from '../../actions/auth';
+import Swal from 'sweetalert2';
+
 import './login.css';
 
 export const LoginScreen = () => {
 	const dispatch = useDispatch();
 
 	const [formLoginValues, handleLoginInputChange] = useForm({
-		lEmail: 'braiscaloto92@gmail.com',
-		lPassword: '123456',
-	});
-	const [formRegisterValues, handleRegisterInputChange] = useForm({
-		rName: 'brais',
-		rEmail: 'braiscaloto92@gmail.com',
-		rPassword1: '123456',
-		rPassword2: '123456',
+		lEmail: '',
+		lPassword: '',
 	});
 
-	const { rEmail, rName, rPassword1, rPassword2 } = formRegisterValues;
+	const [formRegisterValues, handleRegisterInputChange] = useForm({
+		rName: '',
+		rEmail: '',
+		rPassword1: '',
+		rPassword2: '',
+	});
 
 	const { lEmail, lPassword } = formLoginValues;
+	const { rName, rEmail, rPassword1, rPassword2 } = formRegisterValues;
 
 	const handleLogin = (e) => {
 		e.preventDefault();
-
-		dispatch(startlogin(lEmail, lPassword));
+		dispatch(startLogin(lEmail, lPassword));
 	};
+
 	const handleRegister = (e) => {
 		e.preventDefault();
+
 		if (rPassword1 !== rPassword2) {
-			return Swal.fire('Error', 'Passwords do not match', 'error');
+			return Swal.fire(
+				'Error',
+				'Las contraseñas deben de ser iguales',
+				'error'
+			);
 		}
+		console.log('?');
 		dispatch(startRegister(rEmail, rPassword1, rName));
 	};
+
 	return (
 		<div className='container login-container'>
 			<div className='row'>
 				<div className='col-md-6 login-form-1'>
-					<h3>Sign In</h3>
+					<h3>Ingreso</h3>
 					<form onSubmit={handleLogin}>
 						<div className='form-group'>
 							<input
-								type='email'
+								type='text'
 								className='form-control'
-								placeholder='Email'
+								placeholder='Correo'
 								name='lEmail'
+								autoComplete='off'
 								value={lEmail}
 								onChange={handleLoginInputChange}
 							/>
@@ -55,9 +64,10 @@ export const LoginScreen = () => {
 							<input
 								type='password'
 								className='form-control'
-								placeholder='Password'
+								placeholder='Contraseña'
 								name='lPassword'
 								value={lPassword}
+								autoComplete='off'
 								onChange={handleLoginInputChange}
 							/>
 						</div>
@@ -72,15 +82,16 @@ export const LoginScreen = () => {
 				</div>
 
 				<div className='col-md-6 login-form-2'>
-					<h3>Register</h3>
+					<h3>Registro</h3>
 					<form onSubmit={handleRegister}>
 						<div className='form-group'>
 							<input
 								type='text'
 								className='form-control'
-								placeholder='Name'
+								placeholder='Nombre'
 								name='rName'
 								value={rName}
+								autoComplete='off'
 								onChange={handleRegisterInputChange}
 							/>
 						</div>
@@ -88,9 +99,10 @@ export const LoginScreen = () => {
 							<input
 								type='email'
 								className='form-control'
-								placeholder='Email'
+								placeholder='Correo'
 								name='rEmail'
 								value={rEmail}
+								autoComplete='off'
 								onChange={handleRegisterInputChange}
 							/>
 						</div>
@@ -98,8 +110,9 @@ export const LoginScreen = () => {
 							<input
 								type='password'
 								className='form-control'
-								placeholder='Password'
+								placeholder='Contraseña'
 								name='rPassword1'
+								autoComplete='off'
 								value={rPassword1}
 								onChange={handleRegisterInputChange}
 							/>
@@ -109,8 +122,9 @@ export const LoginScreen = () => {
 							<input
 								type='password'
 								className='form-control'
-								placeholder='Repeat your password'
+								placeholder='Repita la contraseña'
 								name='rPassword2'
+								autoComplete='off'
 								value={rPassword2}
 								onChange={handleRegisterInputChange}
 							/>
@@ -120,7 +134,7 @@ export const LoginScreen = () => {
 							<input
 								type='submit'
 								className='btnSubmit'
-								value='Register'
+								value='Crear cuenta'
 							/>
 						</div>
 					</form>

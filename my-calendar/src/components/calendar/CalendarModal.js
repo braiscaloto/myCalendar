@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Modal from 'react-modal';
 import moment from 'moment';
+import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
 import Swal from 'sweetalert2';
 
@@ -25,14 +25,14 @@ const customStyles = {
 };
 Modal.setAppElement('#root');
 
-const now = moment().minutes(0).seconds(0).add(1, 'hours');
-const oneHourLater = now.clone().add(1, 'hours');
+const now = moment().minutes(0).seconds(0).add(1, 'hours'); // 3:00:00
+const nowPlus1 = now.clone().add(1, 'hours');
 
 const initEvent = {
 	title: '',
 	notes: '',
 	start: now.toDate(),
-	end: oneHourLater.toDate(),
+	end: nowPlus1.toDate(),
 };
 
 export const CalendarModal = () => {
@@ -40,13 +40,13 @@ export const CalendarModal = () => {
 	const { activeEvent } = useSelector((state) => state.calendar);
 	const dispatch = useDispatch();
 
-	//const [startDate, setStartDate] = useState(now.toDate());
-	//const [endDate, setEndDate] = useState(oneHourLater.toDate());
+	//const [dateStart, setDateStart] = useState(now.toDate());
+	//const [dateEnd, setDateEnd] = useState(nowPlus1.toDate());
 	const [titleValid, setTitleValid] = useState(true);
 
 	const [formValues, setFormValues] = useState(initEvent);
 
-	const { title, notes, start, end } = formValues;
+	const { notes, title, start, end } = formValues;
 
 	useEffect(() => {
 		if (activeEvent) {
@@ -67,24 +67,24 @@ export const CalendarModal = () => {
 		dispatch(uiCloseModal());
 		dispatch(eventClearActiveEvent());
 		setFormValues(initEvent);
-		//setStartDate(now.toDate());
-		//setEndDate(oneHourLater.toDate());
 	};
 
 	const handleStartDateChange = (e) => {
-		//setStartDate(e);
+		//setDateStart(e);
 		setFormValues({
 			...formValues,
 			start: e,
 		});
 	};
+
 	const handleEndDateChange = (e) => {
-		//setEndDate(e);
+		//setDateEnd(e);
 		setFormValues({
 			...formValues,
 			end: e,
 		});
 	};
+
 	const handleSubmitForm = (e) => {
 		e.preventDefault();
 
@@ -92,8 +92,13 @@ export const CalendarModal = () => {
 		const momentEnd = moment(end);
 
 		if (momentStart.isSameOrAfter(momentEnd)) {
-			return Swal.fire('Error', 'End date must be higer than start date');
+			return Swal.fire(
+				'Error',
+				'La fecha fin debe de ser mayor a la fecha de inicio',
+				'error'
+			);
 		}
+
 		if (title.trim().length < 2) {
 			return setTitleValid(false);
 		}
@@ -107,7 +112,7 @@ export const CalendarModal = () => {
 					id: new Date().getTime(),
 					user: {
 						_id: '123',
-						name: 'Brais',
+						name: 'Fernando',
 					},
 				})
 			);
@@ -130,7 +135,7 @@ export const CalendarModal = () => {
 			<hr />
 			<form className='container' onSubmit={handleSubmitForm}>
 				<div className='form-group'>
-					<label>Date and start time</label>
+					<label>Día y hora de inicio</label>
 					<DateTimePicker
 						onChange={handleStartDateChange}
 						value={start}
@@ -139,7 +144,7 @@ export const CalendarModal = () => {
 				</div>
 
 				<div className='form-group'>
-					<label>Date and end time</label>
+					<label>Día y hora de finalización</label>
 					<DateTimePicker
 						onChange={handleEndDateChange}
 						value={end}
@@ -150,7 +155,7 @@ export const CalendarModal = () => {
 
 				<hr />
 				<div className='form-group'>
-					<label>Title and notes</label>
+					<label>Título y notas</label>
 					<input
 						type='text'
 						className={`form-control ${
@@ -163,7 +168,7 @@ export const CalendarModal = () => {
 						autoComplete='off'
 					/>
 					<small id='emailHelp' className='form-text text-muted'>
-						Short description
+						Descripción corta
 					</small>
 				</div>
 
@@ -178,7 +183,7 @@ export const CalendarModal = () => {
 						onChange={handleInputChange}
 					></textarea>
 					<small id='emailHelp' className='form-text text-muted'>
-						Additional Information
+						Información adicional
 					</small>
 				</div>
 
@@ -187,7 +192,7 @@ export const CalendarModal = () => {
 					className='btn btn-outline-primary btn-block'
 				>
 					<i className='far fa-save'></i>
-					<span> Save </span>
+					<span> Guardar </span>
 				</button>
 			</form>
 		</Modal>
